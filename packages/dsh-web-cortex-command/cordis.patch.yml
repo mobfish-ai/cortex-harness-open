@@ -1,0 +1,3 @@
+- insert:
+    - id: cortex-dsh-web-command
+      name: cortex-dsh-web-command
