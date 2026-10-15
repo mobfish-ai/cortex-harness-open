@@ -3,3 +3,5 @@ node_modules/
 .env
 .env.*
 .npm/
+docs/.vitepress/dist
+docs/.vitepress/cache

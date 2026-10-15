@@ -1,12 +1,16 @@
-# CORTEX Harness
+# Cortex Harness
 
-CORTEX Harness is the open protocol and reference tooling for running CORTEX
+Cortex Harness is the open protocol and reference tooling for running CORTEX
 work as small Blocks. A Block has its own entrypoint, tests, and public
 contract. The CORTEX Kernel remains the authority for leases, replay,
 receipts, and completion decisions.
 
-This repository is the public project: the Apache-2.0 license, the docs, the
-DSH Web reference adapter, and the directory reviewed Blocks land in.
+The public constitution is the CORTEX Six Laws, also called the CORTEX
+Collaboration Constitution. English is the source language. Chinese is used
+only on the docs site's display pages.
+
+This repository holds the Apache-2.0 license, the export allowlist, the
+`cortexharness.org` docs, and the directory reviewed Blocks land in.
 
 ## Quickstart
 
@@ -19,8 +23,7 @@ cd cortex-harness-open
 npm test
 ```
 
-`npm test` runs the Node.js test runner against the reference adapter and the
-repository checks. That is the whole quickstart.
+`npm test` runs the Node.js test runner and the export grep gate.
 
 To send live commands, run a CORTEX task-pool server on loopback and install
 the adapter into a local DSH Web profile. Keep the token in the host
@@ -59,23 +62,17 @@ release. No registry release is published from this repository yet.
 chain, the ordered record of what the harness found, so later blocks can read
 that index.
 
-The implementation is under review in
-[[redacted]](https://github.com/[redacted]) on
-branch `[redacted]`:
-
-- `blocks/discovery-chain-index`
-- `scripts/discovery-chain-index.mjs`
-
-This repository will receive the block in [`blocks/`](blocks/) when that
-review lands. The private tree is not copied here in the meantime. The
-candidate list, including the `cortex-loop` self-improvement engine, is in
-[ROADMAP.md](ROADMAP.md).
+That block is still under review and is not exported into this repository.
+When the review finishes, it lands in [`blocks/`](blocks/) as
+`blocks/discovery-chain-index`, with the entry script
+`scripts/discovery-chain-index.mjs`. The candidate list, including the
+`cortex-loop` self-improvement engine, is in [ROADMAP.md](ROADMAP.md).
 
 ### Reference adapter
 
 [`packages/dsh-web-cortex-command`](packages/dsh-web-cortex-command/) is the
-host-side DSH Web bridge published today. The browser sends a `/cortex` slash
-command and receives a short summary. The host process calls
+host-side DSH Web bridge that is already in the tree. The browser sends a
+`/cortex` slash command and receives a short summary. The host process calls
 `/v1/native-task-pool/{status,enqueue,recover}` on the loopback API with
 `CORTEX_API_TOKEN`. Error text has the token replaced with `[redacted]`
 before it returns.
@@ -90,11 +87,29 @@ The repository root `package.json` is the GitHub-installable bundle for that
 plugin. Its `dsh.bundle.patch` field points at
 `packages/dsh-web-cortex-command/cordis.patch.yml`.
 
+The adapter is not an allowlisted class in [ALLOWLIST.md](ALLOWLIST.md). It
+remains as a pre-allowlist export.
+
+## Website
+
+The docs site is VitePress under [`docs/`](docs/). English pages are the
+source. [`docs/zh/`](docs/zh/) is the Chinese display layer. The canonical
+host is `cortexharness.org`. `cortexharness.ai` is reserved and has no site.
+
+```sh
+npm ci
+npm run docs:build
+```
+
+The static output is `docs/.vitepress/dist`. Cloudflare Pages project
+`cortexharness-org` is named in [wrangler.toml](wrangler.toml). CI builds the
+site on push to `main`. It does not deploy.
+
 ## Public boundary
 
-The tree is the allowlisted public export: plugin source, tests, and project
-docs. Credentials, vaults, customer records, store data, and local runtime
-state stay out.
+Exports follow [ALLOWLIST.md](ALLOWLIST.md). Credentials, vaults, customer
+records, store data, and local runtime state stay out. The grep gate enforces
+the hard bans.
 
 ## License
 
