@@ -9,6 +9,16 @@ permissions:
   contents: read
 
 jobs:
+  export-grep:
+    name: Export grep gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Grep banned export patterns
+        run: bash scripts/check-export-grep.sh
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -23,3 +33,22 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build docs site
+        run: npm run docs:build

@@ -1,0 +1,7 @@
+# Cloudflare Pages build config for project cortexharness-org.
+# Production hostname: cortexharness.org
+# cortexharness.ai is reserved and must not be attached to this project.
+# This file does not deploy. Do not run `wrangler pages deploy` from CI.
+name = "cortexharness-org"
+pages_build_output_dir = "./docs/.vitepress/dist"
+compatibility_date = "2026-10-15"
