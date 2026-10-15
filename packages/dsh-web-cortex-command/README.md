@@ -6,11 +6,11 @@ DSH host; the host calls the authenticated CORTEX localhost API. The browser
 never receives `CORTEX_API_TOKEN`, and the plugin cannot settle a task or mark
 work complete.
 
-The package is public-ready under the name `cortex-dsh-web-command` and is
-compatible with the future `cortex-harness-open` export because its package
-surface contains no private workspace paths, credentials, or runtime state.
-The package is not claimed to be published yet. After a registry release, the
-public install form is:
+The package is licensed under the Apache License, Version 2.0 (see `LICENSE`
+and `NOTICE`). The source in this repository is the package
+`cortex-dsh-web-command`. Its package surface contains the plugin source,
+docs, and license only. A registry release has not been published. After one
+is cut, the public install form is:
 
 ```sh
 npm install cortex-dsh-web-command
@@ -21,7 +21,7 @@ npm install cortex-dsh-web-command
 From a local checkout, install the package into the DSH `web` profile:
 
 ```sh
-dsh plugin --profile web add file:/absolute/path/to/cortex-harness/packages/dsh-web-cortex-command
+dsh plugin --profile web add file:/absolute/path/to/cortex-harness-open/packages/dsh-web-cortex-command
 ```
 
 Set these variables in the environment of the DSH host process before starting
@@ -75,7 +75,13 @@ then exercises `status`, `enqueue`, `recover`, malformed input, and missing
 token handling:
 
 ```sh
-bash scripts/runtime-bootstrap.sh node --test packages/dsh-web-cortex-command/test/smoke.test.mjs
+npm test
+```
+
+From this package directory the same check is:
+
+```sh
+node --test test/smoke.test.mjs test/package-pack.test.mjs
 ```
 
 The first test also checks that the package entry point and declared profile

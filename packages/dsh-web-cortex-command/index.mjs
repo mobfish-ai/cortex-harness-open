@@ -1,3 +1,6 @@
+// Copyright 2026 CORTEX Harness contributors
+// SPDX-License-Identifier: Apache-2.0
+//
 // Host-only DSH Web command surface for the CORTEX task pool.
 // The browser sends only a slash command to DSH. CORTEX credentials stay in
 // this host process and are never returned to the command result.
