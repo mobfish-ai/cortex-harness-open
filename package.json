@@ -2,7 +2,7 @@
   "name": "cortex-dsh-web-command",
   "version": "0.1.0",
   "description": "Host-side DSH Web commands for the authenticated CORTEX task-pool API",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/mobfish-ai/cortex-harness-open.git"
@@ -16,6 +16,9 @@
     "deepseek-harness"
   ],
   "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
   "main": "./packages/dsh-web-cortex-command/index.mjs",
   "exports": {
     ".": "./packages/dsh-web-cortex-command/index.mjs"
