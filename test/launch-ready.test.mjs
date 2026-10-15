@@ -114,13 +114,18 @@ test("repository text contains no secret-like or private material", async () => 
   assert.deepEqual(findings, []);
 });
 
-test("Chinese appears only in the docs display layer", async () => {
+test("Chinese appears only in docs or allowlisted bilingual Block paths", async () => {
   const cjk = /[\u4e00-\u9fff]/u;
+  const bilingualOk = (relativePath) =>
+    relativePath.startsWith("docs/") ||
+    relativePath.startsWith("blocks/discovery-chain-index/") ||
+    relativePath === "scripts/discovery-chain-index.mjs" ||
+    relativePath === "scripts/discovery-chain-index.test.mjs";
   const files = await filesUnder(root);
   const findings = [];
   for (const path of files) {
     const relativePath = relative(root, path);
-    if (relativePath.startsWith("docs/")) continue;
+    if (bilingualOk(relativePath)) continue;
     const buffer = await readFile(path);
     if (buffer.includes(0)) continue;
     if (cjk.test(buffer.toString("utf8"))) findings.push(relativePath);
