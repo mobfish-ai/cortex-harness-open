@@ -29,6 +29,7 @@ test("npm pack dry-run contains only the public command package surface", async 
     const files = report[0].files.map(entry => entry.path).sort();
     assert.deepEqual(files, [
       "LICENSE",
+      "NOTICE",
       "README.md",
       "cordis.patch.yml",
       "index.mjs",
