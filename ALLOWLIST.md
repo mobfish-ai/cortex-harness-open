@@ -18,6 +18,10 @@ Allowlisted classes:
 - The public constitution: CORTEX Six Laws / CORTEX Collaboration Constitution
 - This allowlist, the Apache-2.0 `LICENSE` and `NOTICE`, and the
   `cortexharness.org` docs site
+- Discovery-chain index Block: `blocks/discovery-chain-index/**`,
+  `scripts/discovery-chain-index.mjs`, and `scripts/discovery-chain-index.test.mjs`
+  (Apache-2.0; no private repository or branch names in public files; scrub
+  internal hostnames before export)
 
 A new class of file needs an explicit addition to this list before it is
 exported.
