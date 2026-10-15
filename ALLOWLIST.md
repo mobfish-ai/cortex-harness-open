@@ -50,8 +50,15 @@ coordinates that were removed from the tree.
 
 ## 3. Language
 
-The engine defaults to English. Chinese and English together are allowed only
-in the front-end display layer under `docs/`.
+The engine defaults to English. Chinese and English together are allowed in:
+
+- the front-end display layer under `docs/`
+- the allowlisted discovery-chain-index Block paths
+  (`blocks/discovery-chain-index/**`, `scripts/discovery-chain-index.mjs`,
+  `scripts/discovery-chain-index.test.mjs`), whose method contract and verb
+  taxonomy are bilingual by design
+
+No other engine or package path may carry Chinese until the allowlist says so.
 
 ## 4. Names
 
