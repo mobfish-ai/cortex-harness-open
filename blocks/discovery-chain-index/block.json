@@ -1,0 +1,44 @@
+{
+  "schema": "cortex.block-seven-elements/v1",
+  "block_id": "block.cortex.discovery-chain-index",
+  "version": "0.1.1",
+  "level": "Block",
+  "license": "Apache-2.0",
+  "copyright": "mobfish-ai",
+  "publish": true,
+  "publication": "open",
+  "release_gate": "B",
+  "release_gate_target": {
+    "gate": "B",
+    "evidence": "blocks/discovery-chain-index/evidence/GATE-B.md"
+  },
+  "repo_root": "../..",
+  "elements": {
+    "method_contract": [
+      "blocks/discovery-chain-index/BLOCK.md"
+    ],
+    "implementation": [
+      "scripts/discovery-chain-index.mjs"
+    ],
+    "tests": [
+      "scripts/discovery-chain-index.test.mjs",
+      "blocks/discovery-chain-index/fixtures/skills"
+    ],
+    "evidence": [
+      "blocks/discovery-chain-index/evidence/GATE-B.md"
+    ],
+    "runtime_adapters": [
+      "blocks/discovery-chain-index/RUNTIME.md",
+      "blocks/discovery-chain-index/adapters/systemd/discovery-chain-index.service",
+      "blocks/discovery-chain-index/adapters/launchd/com.cortex.discovery-chain-index.plist"
+    ],
+    "license": [
+      "blocks/discovery-chain-index/LICENSE",
+      "blocks/discovery-chain-index/NOTICE"
+    ],
+    "update_mechanism": [
+      "blocks/discovery-chain-index/UPDATE.md",
+      "blocks/discovery-chain-index/CHANGELOG.md"
+    ]
+  }
+}
