@@ -1,0 +1,12 @@
+# Copyright 2026 mobfish-ai
+# SPDX-License-Identifier: Apache-2.0
+[Unit]
+Description=CORTEX discovery-chain index (read-only, loopback)
+
+[Service]
+ExecStart=/usr/bin/env node /opt/cortex-harness/scripts/discovery-chain-index.mjs serve --index /var/lib/cortex/discovery-index --host 127.0.0.1 --port 8795
+Restart=on-failure
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=default.target
