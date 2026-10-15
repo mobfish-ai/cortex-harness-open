@@ -17,7 +17,10 @@
   ],
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test && bash scripts/check-export-grep.sh",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs --host 127.0.0.1"
   },
   "main": "./packages/dsh-web-cortex-command/index.mjs",
   "exports": {
@@ -33,5 +36,8 @@
     "bundle": {
       "patch": "./packages/dsh-web-cortex-command/cordis.patch.yml"
     }
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
   }
 }

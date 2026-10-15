@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for improving CORTEX Harness.
+Thanks for improving Cortex Harness.
 
 ## License
 
@@ -20,15 +20,19 @@ cd cortex-harness-open
 npm test
 ```
 
-`npm test` runs the Node.js built-in test runner. There is no install step
-and no build. The DSH Web plugin tests start loopback fixtures only.
+`npm test` runs the Node.js built-in test runner and the export grep gate.
+The DSH Web plugin tests start loopback fixtures only. Building the docs site
+requires `npm ci` and `npm run docs:build`.
 
 ## Pull requests
 
 - Say what a user can do after the change.
 - Add or update tests for behavior you change.
 - Keep the quickstart in [README.md](README.md) runnable in under five minutes.
-- CI on pull requests runs `npm test` on Node.js 24.
+- CI on pull requests runs the export grep gate, `npm test`, and the docs
+  build on Node.js 24.
+- Follow [ALLOWLIST.md](ALLOWLIST.md). English is the engine language.
+  Chinese belongs only in `docs/zh/`.
 
 ## Public boundary
 
@@ -40,19 +44,19 @@ Leave these out of commits, fixtures, logs, and docs:
 - Tokens, private keys, and passwords
 - Customer records and store data
 - Private hostnames and private IPv4 addresses
-- Home-directory paths and other machine-local paths
+- Home-directory paths, team identifiers, and the other hard bans in
+  `ALLOWLIST.md`
+- Retired product names listed in `ALLOWLIST.md`
 
-`npm test` scans the tree for those patterns. Loopback addresses
+`npm test` runs `scripts/check-export-grep.sh`. Loopback addresses
 (`127.0.0.1`, `localhost`, `::1`) are the supported API target and are fine.
 
 ## Blocks
 
 Promote a block into [`blocks/`](blocks/) only after the checklist in
-[ROADMAP.md](ROADMAP.md). `discovery-chain-index` stays on
-`[redacted]` branch `[redacted]` until
-that review finishes. Describe a private engine in the roadmap, and land a
-fresh public implementation with synthetic fixtures. Do not paste a private
-tree in.
+[ROADMAP.md](ROADMAP.md). `discovery-chain-index` stays outside this
+repository until its review finishes. Land a fresh public implementation
+with synthetic fixtures. Do not paste a private tree in.
 
 ## Style
 

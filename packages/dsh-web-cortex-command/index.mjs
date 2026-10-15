@@ -1,4 +1,4 @@
-// Copyright 2026 CORTEX Harness contributors
+// Copyright 2026 Cortex Harness contributors
 // SPDX-License-Identifier: Apache-2.0
 //
 // Host-only DSH Web command surface for the CORTEX task pool.

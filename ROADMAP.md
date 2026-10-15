@@ -5,26 +5,22 @@ users and GitHub stars. This file lists what is already in the repository,
 which Block is first, and which candidates still have to be extracted. It
 describes how to extract them. It does not include private source.
 
-## Shipped
+## Shipped in this repository
 
-`packages/dsh-web-cortex-command` is the DSH Web reference adapter. It is the
-installable surface of this repository. It is a bridge to the task-pool API,
-and the block directory is still waiting for its first promotion.
+`packages/dsh-web-cortex-command` is the DSH Web reference adapter. It is a
+bridge to the task-pool API. It predates [ALLOWLIST.md](ALLOWLIST.md) and is
+not an allowlisted class.
+
+The docs site for `cortexharness.org` is the VitePress project in `docs/`.
 
 ## First block: `discovery-chain-index`
 
-Status: under review. Not vendored here.
+Status: under review. Not exported here.
 
-Source, on `[redacted]` branch `[redacted]`:
-
-- `blocks/discovery-chain-index`
-- `scripts/discovery-chain-index.mjs`
-
-Promotion means copying that reviewed result into `blocks/discovery-chain-index`
-in this repository, relicensing it under Apache-2.0, and adding tests that run
-in CI. Do that in a follow-up pull request after the branch review accepts the
-files. Leave the scripts entrypoint documented, and keep the block free of
-workspace paths and credentials.
+The reviewed result belongs in `blocks/discovery-chain-index`, under
+Apache-2.0, with tests that run in CI. The entry script is
+`scripts/discovery-chain-index.mjs`. Keep the block free of workspace paths
+and credentials.
 
 Later blocks should read this index. That is why it lands first.
 
@@ -32,19 +28,14 @@ Later blocks should read this index. That is why it lands first.
 
 ### `cortex-loop`
 
-Status: private. Extraction is proposed below and has not started.
+Status: candidate. Not exported.
 
-`cortex-loop` is the self-improvement engine. Today it lives in the private
-repository `[redacted]` at `bin/cortex-loop`. This repository
-must not receive a copy of that tree.
-
-Extract it as a new public block that reads the discovery index and emits an
-improvement record. Keep local policy in the private repository as a thin
-wrapper.
+`cortex-loop` is the self-improvement engine. Extract it only after
+`discovery-chain-index` is in `blocks/`, and only as a fresh public
+implementation that reads the discovery index and emits an improvement
+record. Keep local policy outside this repository, as a thin wrapper.
 
 #### Cut line
-
-Treat `bin/cortex-loop` as a private entrypoint, not as the block.
 
 The public block may contain:
 
@@ -54,36 +45,30 @@ The public block may contain:
 - Tests whose fixtures are obviously invented (`example-task`,
   `fixtures/example.json`)
 
-The public block stays free of:
-
-- Imports from `kelvin-obs-base` or any other private checkout
-- Absolute paths, private hostnames, tokens, and customer or store data
-- The private wrapper's configuration and local databases
+The public block stays free of private checkouts, absolute paths, tokens, and
+customer or store data.
 
 #### Steps
 
-1. In the private repository, write down the observable contract: arguments,
-   files read, files written, and exit codes. Keep that note private until
-   every path, host, and identifier in it has been removed or replaced with a
-   public name.
-2. Replace workspace imports with three operations the public block can own:
+1. Write the observable contract privately: arguments, files read, files
+   written, and exit codes. Keep that note private until every path, host,
+   and identifier in it has been removed or replaced with a public name.
+2. Replace private imports with three operations the public block can own:
    - `readIndex` returns discovery-chain records
    - `propose` turns those records into an improvement
    - `emit` writes that improvement as JSON on stdout
 3. Implement those operations in this repository against the contract. Use
-   the private behavior as the specification. Write the public code fresh,
-   with Apache-2.0 headers and synthetic fixtures. Do not copy the private
-   files.
+   private behavior as the specification. Write the public code fresh, with
+   Apache-2.0 headers and synthetic fixtures. Do not copy private files.
 4. Point `readIndex` at `discovery-chain-index` once that block has landed.
    Until then, tests can pass a fixture index in the same shape the block
    will publish.
-5. Run `npm test`, including the public-boundary scan, in CI.
-6. After the block is green, change the private `bin/cortex-loop` into a
-   caller of the published package. That follow-up stays in the private
-   repository and can keep local policy there.
+5. Run `npm test`, including the export grep gate, in CI.
+6. After the block is green, point the private entrypoint at the published
+   package. That follow-up stays outside this repository.
 
 Land `discovery-chain-index` before `cortex-loop`, so the engine reads a
-public index instead of walking a private tree.
+public index.
 
 ### `task-pool-contract`
 
@@ -94,7 +79,17 @@ The adapter already calls `GET /v1/native-task-pool/status` and
 `POST /v1/native-task-pool/{enqueue,recover}`. A small versioned schema for
 those requests, responses, and the error object would let other clients bind
 to the same loopback API. Publish the schema from the messages the adapter
-already sends. Leave the server implementation on the CORTEX side.
+already sends. Schema is an allowlisted class. Leave the server
+implementation on the CORTEX side.
+
+### CORTEX Six Laws
+
+Status: named, not yet exported.
+
+The public constitution is the CORTEX Six Laws / CORTEX Collaboration
+Constitution. The English text is allowlisted. The docs page at
+`docs/constitution.md` is the place it will land. The Chinese page stays a
+display translation.
 
 ## Stays closed
 
@@ -109,10 +104,10 @@ These remain CORTEX Kernel authority and are not candidate blocks:
 A block moves into `blocks/` when all of these are true:
 
 - The source review that produced it has finished
-- `LICENSE` and `NOTICE` apply, and `package.json` or the block docs say
-  `Apache-2.0`
+- The block's class is listed in `ALLOWLIST.md`
+- `LICENSE` and `NOTICE` apply, and the block docs say `Apache-2.0`
 - Tests for the block run in CI on Node.js 24
-- The public-boundary scan is clean
+- The export grep gate is clean
 - The block builds and tests without a private checkout
 - The root quickstart still finishes in under five minutes, or the block
   README states the extra tool it needs
