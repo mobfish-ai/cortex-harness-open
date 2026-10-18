@@ -1,3 +1,5 @@
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 # CORTEX DSH Web command
 
 This is a host-only DSH Web plugin. It registers one slash command, `/cortex`,

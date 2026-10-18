@@ -65,8 +65,12 @@ test("Apache-2.0 LICENSE, NOTICE, and launch docs are present", async () => {
     "scripts/check-export-grep.sh",
     "wrangler.toml",
     "docs/index.md",
-    "docs/zh/index.md",
+    "docs/zh-CN/index.md",
+    "docs/zh-CN/locale.json",
     "docs/.vitepress/config.mjs",
+    "README.zh-CN.md",
+    "scripts/check-cjk.sh",
+    "scripts/cjk-allowlist.txt",
     ".github/workflows/ci.yml",
   ]) {
     const info = await stat(join(root, required));
@@ -74,7 +78,9 @@ test("Apache-2.0 LICENSE, NOTICE, and launch docs are present", async () => {
   }
 
   const readme = await readFile(join(root, "README.md"), "utf8");
-  assert.match(readme, /^# Cortex Harness/u);
+  const switchLabel = "\u7b80\u4f53\u4e2d\u6587";
+  assert.match(readme, new RegExp(`^\\[English\\]\\(README\\.md\\) \\| \\[${switchLabel}\\]\\(README\\.zh-CN\\.md\\)`, "u"));
+  assert.match(readme, /^# Cortex Harness/mu);
   assert.match(readme, /discovery-chain-index/u);
   assert.match(readme, /CORTEX Six Laws/u);
   assert.match(readme, /cortexharness\.org/u);
@@ -88,6 +94,7 @@ test("Apache-2.0 LICENSE, NOTICE, and launch docs are present", async () => {
   assert.match(ci, /npm test/u);
   assert.match(ci, /node-version: 24/u);
   assert.match(ci, /check-export-grep\.sh/u);
+  assert.match(ci, /check-cjk\.sh/u);
   assert.match(ci, /docs:build/u);
   assert.equal(ci.includes("pages deploy"), false);
 
@@ -114,21 +121,50 @@ test("repository text contains no secret-like or private material", async () => 
   assert.deepEqual(findings, []);
 });
 
-test("Chinese appears only in docs or allowlisted bilingual Block paths", async () => {
-  const cjk = /[\u4e00-\u9fff]/u;
-  const bilingualOk = (relativePath) =>
-    relativePath.startsWith("docs/") ||
-    relativePath.startsWith("blocks/discovery-chain-index/") ||
-    relativePath === "scripts/discovery-chain-index.mjs" ||
-    relativePath === "scripts/discovery-chain-index.test.mjs";
+test("CJK appears only in zh-CN docs and the fixture allowlist", async () => {
+  const allowlist = (await readFile(join(root, "scripts/cjk-allowlist.txt"), "utf8"))
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"));
+  const switchLabel = "\u7b80\u4f53\u4e2d\u6587";
+  const switchRe = new RegExp(
+    `\\[English\\]\\([^)]*\\)\\s*\\|\\s*\\[${switchLabel}\\]\\([^)]*\\)|English\\s*\\|\\s*${switchLabel}`,
+    "gu",
+  );
+  const cjk = /[\u3000-\u303f\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uac00-\ud7af\uff00-\uffef]/u;
+
+  function matchGlob(text, pattern) {
+    const source = pattern
+      .replace(/[.+^${}()|[\]\\]/gu, "\\$&")
+      .replaceAll("*", ".*")
+      .replaceAll("?", ".");
+    return new RegExp(`^${source}$`, "u").test(text);
+  }
+
+  function allowed(relativePath) {
+    const name = relativePath.split("/").pop();
+    return allowlist.some((pattern) => {
+      if (pattern.endsWith("/")) return relativePath.startsWith(pattern);
+      if (/[*?[]/u.test(pattern)) return matchGlob(relativePath, pattern) || matchGlob(name, pattern);
+      return relativePath === pattern;
+    });
+  }
+
+  await assert.rejects(stat(join(root, "docs/zh/index.md")));
+  const fixture = await readFile(join(root, "blocks/discovery-chain-index/fixtures/cjk-verb-keywords.json"), "utf8");
+  assert.match(fixture, /\p{Script=Han}/u);
+  const engine = await readFile(join(root, "scripts/discovery-chain-index.mjs"), "utf8");
+  assert.equal(cjk.test(engine), false);
+
   const files = await filesUnder(root);
   const findings = [];
   for (const path of files) {
     const relativePath = relative(root, path);
-    if (bilingualOk(relativePath)) continue;
+    if (allowed(relativePath)) continue;
     const buffer = await readFile(path);
     if (buffer.includes(0)) continue;
-    if (cjk.test(buffer.toString("utf8"))) findings.push(relativePath);
+    const stripped = buffer.toString("utf8").replace(switchRe, "");
+    if (cjk.test(stripped)) findings.push(relativePath);
   }
   assert.deepEqual(findings, []);
 });

@@ -1,3 +1,5 @@
+[English](CONTRIBUTING.md) | [简体中文](CONTRIBUTING.zh-CN.md)
+
 # Contributing
 
 Thanks for improving Cortex Harness.
@@ -20,7 +22,7 @@ cd cortex-harness-open
 npm test
 ```
 
-`npm test` runs the Node.js built-in test runner and the export grep gate.
+`npm test` runs the Node.js built-in test runner, the export grep gate, and the CJK gate.
 The DSH Web plugin tests start loopback fixtures only. Building the docs site
 requires `npm ci` and `npm run docs:build`.
 
@@ -31,8 +33,10 @@ requires `npm ci` and `npm run docs:build`.
 - Keep the quickstart in [README.md](README.md) runnable in under five minutes.
 - CI on pull requests runs the export grep gate, `npm test`, and the docs
   build on Node.js 24.
-- Follow [ALLOWLIST.md](ALLOWLIST.md). English is the engine language.
-  Chinese belongs only in `docs/zh/`.
+- Follow [ALLOWLIST.md](ALLOWLIST.md). The engine and source code are
+  English. Simplified Chinese belongs in `*.zh-CN.md`, `docs/zh-CN/`, and
+  the CJK fixtures named in `scripts/cjk-allowlist.txt`. CI runs
+  `scripts/check-cjk.sh`.
 
 ## Public boundary
 

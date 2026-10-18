@@ -1,3 +1,5 @@
+[English](./website.md) | [简体中文](./zh-CN/website.md)
+
 # Website
 
 The canonical website is <https://cortexharness.org>.
@@ -12,3 +14,6 @@ Pages project, change DNS, or deploy.
 
 `cortexharness.ai` is reserved. It is not a build target and it does not
 receive this site.
+
+English and Simplified Chinese are separate locales. The nav language menu
+and the `English | 简体中文` line at the top of each page switch between them.

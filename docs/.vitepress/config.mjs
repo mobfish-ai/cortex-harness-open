@@ -1,15 +1,15 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitepress";
+
+const here = dirname(fileURLToPath(import.meta.url));
+const chinese = JSON.parse(readFileSync(join(here, "../zh-CN/locale.json"), "utf8"));
 
 const englishNav = [
   { text: "Constitution", link: "/constitution" },
   { text: "Export", link: "/export" },
   { text: "Website", link: "/website" },
-];
-
-const chineseNav = [
-  { text: "宪法", link: "/zh/constitution" },
-  { text: "导出", link: "/zh/export" },
-  { text: "网站", link: "/zh/website" },
 ];
 
 export default defineConfig({
@@ -28,15 +28,15 @@ export default defineConfig({
         ],
       },
     },
-    zh: {
-      label: "中文",
+    "zh-CN": {
+      label: chinese.label,
       lang: "zh-CN",
-      link: "/zh/",
+      link: "/zh-CN/",
       themeConfig: {
-        nav: chineseNav,
+        nav: chinese.nav,
         sidebar: [
-          { text: "概述", link: "/zh/" },
-          ...chineseNav,
+          { text: chinese.overview, link: "/zh-CN/" },
+          ...chinese.nav,
         ],
       },
     },

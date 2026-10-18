@@ -1,3 +1,5 @@
+[English](SECURITY.md) | [简体中文](SECURITY.zh-CN.md)
+
 # Security
 
 ## Reporting a vulnerability

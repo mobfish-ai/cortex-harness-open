@@ -1,8 +1,10 @@
-# Runtime 适配
+[English](RUNTIME.md) | [简体中文](RUNTIME.zh-CN.md)
 
-- 需要：Node 24（仓库锁 24.16.0），无 npm 依赖，无需 pnpm install。
-- Linux：`adapters/systemd/discovery-chain-index.service`（用户级 unit，`systemctl --user`）。
-- macOS：`adapters/launchd/com.cortex.discovery-chain-index.plist`（LaunchAgent）。
-- 其它 runtime（agent 会话、CI）：直接读 `VERB-TASK-INDEX.md`，或调 `query` 子命令，不需要常驻服务。
-- 任务或心跳开工前调用 `before-start --tree <index> --task "..." [--heartbeat <id>]`。这是只读消费。树校验失败时退出码为 1，调用方不得开工。`--heartbeat` 不是授权。
-- 两个适配文件里的路径都是占位路径 `/opt/cortex-harness`、`/var/lib/cortex/discovery-index`，安装时按机器改；不放任何令牌，服务也不需要令牌。
+# Runtime adapters
+
+- Requires Node 24 (this repository pins 24.16.0). There are no npm dependencies and no pnpm install.
+- Linux: `adapters/systemd/discovery-chain-index.service` (a user unit, `systemctl --user`).
+- macOS: `adapters/launchd/com.cortex.discovery-chain-index.plist` (a LaunchAgent).
+- Other runtimes (an agent session, CI): read `VERB-TASK-INDEX.md` directly, or call the `query` subcommand. A resident service is not required.
+- Before a task or heartbeat starts work, call `before-start --tree <index> --task "..." [--heartbeat <id>]`. This is read-only consumption. If tree verification fails, the exit code is 1 and the caller must not start work. `--heartbeat` is not authorization.
+- Both adapter files use the placeholder paths `/opt/cortex-harness` and `/var/lib/cortex/discovery-index`. Change them for the machine at install time. They contain no token, and the service does not need one.

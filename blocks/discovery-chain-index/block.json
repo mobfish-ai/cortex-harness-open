@@ -22,7 +22,9 @@
     ],
     "tests": [
       "scripts/discovery-chain-index.test.mjs",
-      "blocks/discovery-chain-index/fixtures/skills"
+      "blocks/discovery-chain-index/fixtures/skills",
+      "blocks/discovery-chain-index/fixtures/cjk",
+      "blocks/discovery-chain-index/fixtures/cjk-verb-keywords.json"
     ],
     "evidence": [
       "blocks/discovery-chain-index/evidence/GATE-B.md"

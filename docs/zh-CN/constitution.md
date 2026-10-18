@@ -1,3 +1,5 @@
+[English](../constitution.md) | [简体中文](./constitution.md)
+
 # CORTEX 六法
 
 Cortex Harness 的公开宪法是 CORTEX 六法，也称 CORTEX 协作宪法。

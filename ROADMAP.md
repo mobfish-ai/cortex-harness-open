@@ -1,3 +1,5 @@
+[English](ROADMAP.md) | [简体中文](ROADMAP.zh-CN.md)
+
 # Roadmap
 
 The open project is aimed at a public Block set that can earn 1,000 paying
@@ -88,8 +90,8 @@ Status: named, not yet exported.
 
 The public constitution is the CORTEX Six Laws / CORTEX Collaboration
 Constitution. The English text is allowlisted. The docs page at
-`docs/constitution.md` is the place it will land. The Chinese page stays a
-display translation.
+`docs/constitution.md` is the place it will land. The Simplified Chinese
+page at `docs/zh-CN/constitution.md` stays a display translation.
 
 ## Stays closed
 

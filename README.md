@@ -1,3 +1,5 @@
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 # Cortex Harness
 
 Cortex Harness is the open protocol and reference tooling for running CORTEX
@@ -6,8 +8,9 @@ contract. The CORTEX Kernel remains the authority for leases, replay,
 receipts, and completion decisions.
 
 The public constitution is the CORTEX Six Laws, also called the CORTEX
-Collaboration Constitution. English is the source language. Chinese is used
-only on the docs site's display pages.
+Collaboration Constitution. English is the source language for the engine
+and for these docs. Simplified Chinese counterparts are
+[README.zh-CN.md](README.zh-CN.md) and [docs/zh-CN/](docs/zh-CN/).
 
 This repository holds the Apache-2.0 license, the export allowlist, the
 `cortexharness.org` docs, and the directory reviewed Blocks land in.
@@ -23,7 +26,7 @@ cd cortex-harness-open
 npm test
 ```
 
-`npm test` runs the Node.js test runner and the export grep gate.
+`npm test` runs the Node.js test runner, the export grep gate, and the CJK gate.
 
 To send live commands, run a CORTEX task-pool server on loopback and install
 the adapter into a local DSH Web profile. Keep the token in the host
@@ -93,8 +96,9 @@ remains as a pre-allowlist export.
 ## Website
 
 The docs site is VitePress under [`docs/`](docs/). English pages are the
-source. [`docs/zh/`](docs/zh/) is the Chinese display layer. The canonical
-host is `cortexharness.org`. `cortexharness.ai` is reserved and has no site.
+source. [`docs/zh-CN/`](docs/zh-CN/) is the Simplified Chinese display layer.
+The nav language menu switches locales. The canonical host is
+`cortexharness.org`. `cortexharness.ai` is reserved and has no site.
 
 ```sh
 npm ci
@@ -109,7 +113,8 @@ site on push to `main`. It does not deploy.
 
 Exports follow [ALLOWLIST.md](ALLOWLIST.md). Credentials, vaults, customer
 records, store data, and local runtime state stay out. The grep gate enforces
-the hard bans.
+the hard bans. The CJK gate keeps Chinese, Japanese, and Korean characters
+inside the zh-CN docs and the fixture allowlist.
 
 ## License
 
