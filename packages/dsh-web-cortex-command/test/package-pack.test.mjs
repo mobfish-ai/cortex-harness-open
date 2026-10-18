@@ -31,6 +31,7 @@ test("npm pack dry-run contains only the public command package surface", async 
       "LICENSE",
       "NOTICE",
       "README.md",
+      "README.zh-CN.md",
       "cordis.patch.yml",
       "index.mjs",
       "package.json",

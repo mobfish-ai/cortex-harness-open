@@ -1,0 +1,9 @@
+# CJK characters are allowed only on these repo-relative paths.
+# A trailing slash is a directory prefix.
+# A pattern containing * matches the full path and the file name.
+# The language-switch label may also appear on English pages when written as
+# [English](path) | [the Simplified Chinese label](path).
+docs/zh-CN/
+*.zh-CN.md
+blocks/discovery-chain-index/fixtures/cjk/
+blocks/discovery-chain-index/fixtures/cjk-verb-keywords.json

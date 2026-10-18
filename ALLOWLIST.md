@@ -1,3 +1,5 @@
+[English](ALLOWLIST.md) | [简体中文](ALLOWLIST.zh-CN.md)
+
 # Export allowlist
 
 This file mirrors `OPEN-SOURCE-EXPORT.md` (21 August 2026, private OB1
@@ -50,15 +52,24 @@ coordinates that were removed from the tree.
 
 ## 3. Language
 
-The engine defaults to English. Chinese and English together are allowed in:
+The engine and source code default to English. The product name is Cortex
+Harness. The public constitution is the CORTEX Six Laws, also called the
+CORTEX Collaboration Constitution.
 
-- the front-end display layer under `docs/`
-- the allowlisted discovery-chain-index Block paths
-  (`blocks/discovery-chain-index/**`, `scripts/discovery-chain-index.mjs`,
-  `scripts/discovery-chain-index.test.mjs`), whose method contract and verb
-  taxonomy are bilingual by design
+Simplified Chinese is allowed only in:
 
-No other engine or package path may carry Chinese until the allowlist says so.
+- user-facing docs: `docs/zh-CN/**` and `*.zh-CN.md` counterparts, including
+  [README.zh-CN.md](README.zh-CN.md)
+- the language-switch line `[English](README.md) | [简体中文](README.zh-CN.md)`
+  on English pages
+- explicit CJK fixtures listed in `scripts/cjk-allowlist.txt`
+
+Those fixtures hold sample CJK skill text and the keyword list the
+discovery-chain index uses to classify that text. Group labels the engine
+emits are English.
+
+`bash scripts/check-cjk.sh` fails when CJK characters appear outside that
+allowlist. The export grep gate is unchanged.
 
 ## 4. Names
 

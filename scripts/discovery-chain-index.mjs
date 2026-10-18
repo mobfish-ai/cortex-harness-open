@@ -26,16 +26,39 @@ const SECRET_SHAPES = [
 ];
 export function looksSecret(text) { return SECRET_SHAPES.some((re) => re.test(String(text))); }
 
+// English verb groups. CJK keywords that map onto the same groups are loaded
+// from the allowlisted fixture so this file stays English. The first group
+// whose English pattern or CJK keyword matches still wins.
 export const VERB_GROUPS = Object.freeze([
-  ["修复/排障", /\b(fix|debug|diagnos|troubleshoot|repair|error)\w*|修复|排障|故障|报错/i],
-  ["部署/运维", /\b(deploy|launchd|systemd|restart|server|ops|monitor)\w*|部署|运维|重启|监控/i],
-  ["数据/查询", /\b(query|report|analy[sz]|metric|dashboard|sql|data)\w*|查询|报表|分析|数据/i],
-  ["内容/写作", /\b(write|draft|blog|article|seo|copy)\w*|写作|文章|文案|改写/i],
-  ["沟通/消息", /\b(email|mail|slack|discord|telegram|message|notify)\w*|邮件|消息|通知/i],
-  ["设计/图像", /\b(design|image|diagram|logo|visual)\w*|设计|图像|图片/i],
-  ["代码/仓库", /\b(git|github|commit|code|repo|test)\w*|代码|仓库|提交/i],
+  ["Fix / Troubleshoot", /\b(fix|debug|diagnos|troubleshoot|repair|error)\w*/i],
+  ["Deploy / Operate", /\b(deploy|launchd|systemd|restart|server|ops|monitor)\w*/i],
+  ["Data / Query", /\b(query|report|analy[sz]|metric|dashboard|sql|data)\w*/i],
+  ["Content / Writing", /\b(write|draft|blog|article|seo|copy)\w*/i],
+  ["Communication / Messaging", /\b(email|mail|slack|discord|telegram|message|notify)\w*/i],
+  ["Design / Image", /\b(design|image|diagram|logo|visual)\w*/i],
+  ["Code / Repository", /\b(git|github|commit|code|repo|test)\w*/i],
 ]);
-export const FALLBACK_GROUP = "其它/通用";
+export const FALLBACK_GROUP = "Other / General";
+
+const CJK_VERB_FILE = fileURLToPath(new URL(
+  "../blocks/discovery-chain-index/fixtures/cjk-verb-keywords.json",
+  import.meta.url,
+));
+
+let cjkVerbsCache;
+function cjkVerbsByGroup() {
+  if (cjkVerbsCache) return cjkVerbsCache;
+  const map = new Map();
+  if (existsSync(CJK_VERB_FILE)) {
+    const data = JSON.parse(readFileSync(CJK_VERB_FILE, "utf8"));
+    for (const [group, words] of Object.entries(data.groups ?? {})) {
+      if (!Array.isArray(words)) continue;
+      map.set(group, words.filter((word) => typeof word === "string" && word.length > 0));
+    }
+  }
+  cjkVerbsCache = map;
+  return map;
+}
 
 export function parseFrontmatter(text) {
   const m = String(text).match(/^---\r?\n([\s\S]*?)\r?\n---/);
@@ -49,7 +72,13 @@ export function parseFrontmatter(text) {
 }
 
 export function classify(text) {
-  for (const [group, re] of VERB_GROUPS) if (re.test(text)) return group;
+  const haystack = String(text);
+  const keywords = cjkVerbsByGroup();
+  for (const [group, re] of VERB_GROUPS) {
+    if (re.test(haystack)) return group;
+    const words = keywords.get(group) ?? [];
+    if (words.some((word) => haystack.includes(word))) return group;
+  }
   return FALLBACK_GROUP;
 }
 
@@ -75,9 +104,9 @@ export function scanSkills(skillsDir) {
 export function renderMarkdown(entries, generatedAt) {
   const groups = new Map();
   for (const e of entries) { if (!groups.has(e.group)) groups.set(e.group, []); groups.get(e.group).push(e); }
-  const lines = ["# 动词任务索引（我要做X → 用什么）", `> schema ${SCHEMA} · generated ${generatedAt} · ${entries.length} skills · 不含任何密钥`, ""];
+  const lines = ["# Verb task index (I want to do X → which skill)", `> schema ${SCHEMA} · generated ${generatedAt} · ${entries.length} skills · contains no secrets`, ""];
   for (const [group, list] of [...groups].sort((a, b) => a[0].localeCompare(b[0]))) {
-    lines.push(`## ${group}（${list.length}）`);
+    lines.push(`## ${group} (${list.length})`);
     for (const e of list) lines.push(`- **${e.skill}** — ${e.description.slice(0, 110)}`);
     lines.push("");
   }

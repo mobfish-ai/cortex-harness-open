@@ -17,9 +17,9 @@ const scratch = () => mkdtempSync(join(tmpdir(), "dci-"));
 
 test("frontmatter parsing and verb classification", () => {
   assert.deepEqual(parseFrontmatter("---\nname: a\ndescription: \"b c\"\n---\nbody"), { name: "a", description: "b c" });
-  assert.equal(classify("Fix a broken launchd job"), "修复/排障");
-  assert.equal(classify("Send a customer email"), "沟通/消息");
-  assert.equal(classify("nothing in particular"), "其它/通用");
+  assert.equal(classify("Fix a broken launchd job"), "Fix / Troubleshoot");
+  assert.equal(classify("Send a customer email"), "Communication / Messaging");
+  assert.equal(classify("nothing in particular"), "Other / General");
 });
 
 test("build redacts secret-shaped descriptions and writes digest-bound output", () => {
@@ -29,6 +29,10 @@ test("build redacts secret-shaped descriptions and writes digest-bound output", 
     assert.equal(m.skills, 5);
     assert.equal(m.redacted, 1);
     for (const name of ["index.json", "VERB-TASK-INDEX.md", "MANIFEST.json"]) assert.equal(looksSecret(readFileSync(join(out, name), "utf8")), false);
+    const markdown = readFileSync(join(out, "VERB-TASK-INDEX.md"), "utf8");
+    assert.match(markdown, /^# Verb task index \(I want to do X → which skill\)/u);
+    assert.match(markdown, /contains no secrets/u);
+    assert.equal(/[\u3400-\u9fff]/u.test(markdown), false);
     assert.deepEqual(verifyIndex(out), { ok: true, version: "1.0.0", skills: 5, problems: [] });
     writeFileSync(join(out, "index.json"), "{}");
     assert.equal(verifyIndex(out).ok, false);
@@ -181,6 +185,27 @@ test("gate B reproduction bootstraps exact Node 24.16.0 and reads trees before w
   assert.match(script, /shasum/);
   assert.match(script, /openssl/);
   assert.doesNotMatch(script, /\bpath=/);
+});
+
+test("CJK fixtures keep their text and classify to English groups", () => {
+  const out = scratch();
+  try {
+    const skills = join(BLOCK, "fixtures/cjk/skills");
+    buildIndex({ skillsDir: skills, outDir: out, version: "1.0.0", now: new Date("2026-10-18T00:00:00Z") });
+    const index = JSON.parse(readFileSync(join(out, "index.json"), "utf8"));
+    const bySkill = Object.fromEntries(index.entries.map((entry) => [entry.skill, entry]));
+    assert.equal(bySkill["fix-cn"].group, "Fix / Troubleshoot");
+    assert.equal(bySkill["mail-cn"].group, "Communication / Messaging");
+    assert.equal(bySkill["plain-cn"].group, "Other / General");
+    assert.match(bySkill["fix-cn"].description, /\p{Script=Han}/u);
+    const keywords = JSON.parse(readFileSync(join(BLOCK, "fixtures/cjk-verb-keywords.json"), "utf8"));
+    for (const [group, words] of Object.entries(keywords.groups)) {
+      assert.equal(classify(words[0]), group, group);
+    }
+    const markdown = readFileSync(join(out, "VERB-TASK-INDEX.md"), "utf8");
+    assert.match(markdown, /^# Verb task index/u);
+    assert.match(markdown, /## Fix \/ Troubleshoot/u);
+  } finally { rmSync(out, { recursive: true, force: true }); }
 });
 
 test("evidence GATE-B.md has no banned internal host tokens", () => {

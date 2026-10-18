@@ -1,3 +1,5 @@
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 # Blocks
 
 Open Cortex Harness blocks are promoted into this directory after review, and

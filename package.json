@@ -17,7 +17,7 @@
   ],
   "type": "module",
   "scripts": {
-    "test": "node --test && bash scripts/check-export-grep.sh",
+    "test": "node --test && bash scripts/check-export-grep.sh && bash scripts/check-cjk.sh",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs --host 127.0.0.1"

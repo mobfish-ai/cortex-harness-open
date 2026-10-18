@@ -19,6 +19,16 @@ jobs:
       - name: Grep banned export patterns
         run: bash scripts/check-export-grep.sh
 
+  cjk:
+    name: CJK source gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Reject CJK outside the allowlist
+        run: bash scripts/check-cjk.sh
+
   test:
     name: Test
     runs-on: ubuntu-latest

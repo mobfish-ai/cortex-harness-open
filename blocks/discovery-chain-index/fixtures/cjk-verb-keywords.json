@@ -1,0 +1,13 @@
+{
+  "schema": "cortex.discovery-chain-index.cjk-verbs/v1",
+  "purpose": "Allowlisted fixture. These keywords classify CJK skill text into the English verb groups. They are not group labels.",
+  "groups": {
+    "Fix / Troubleshoot": ["修复", "排障", "故障", "报错"],
+    "Deploy / Operate": ["部署", "运维", "重启", "监控"],
+    "Data / Query": ["查询", "报表", "分析", "数据"],
+    "Content / Writing": ["写作", "文章", "文案", "改写"],
+    "Communication / Messaging": ["邮件", "消息", "通知"],
+    "Design / Image": ["设计", "图像", "图片"],
+    "Code / Repository": ["代码", "仓库", "提交"]
+  }
+}

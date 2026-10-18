@@ -1,0 +1,9 @@
+{
+  "label": "简体中文",
+  "overview": "概述",
+  "nav": [
+    { "text": "宪法", "link": "/zh-CN/constitution" },
+    { "text": "导出", "link": "/zh-CN/export" },
+    { "text": "网站", "link": "/zh-CN/website" }
+  ]
+}
