@@ -2,6 +2,8 @@
 
 # Cortex Harness
 
+> **See it in 60 seconds:** [Done is a check result, not a claim](https://huggingface.co/spaces/mars-republic/cortex-loop-demo?utm_source=github&utm_medium=readme&utm_campaign=cortex_loop_demo) — a public demo of one loop tick (`tick -> propose -> check -> try-complete`) where two of five items are refused because the evidence does not match. No model call, no server.
+
 Cortex Harness is the open protocol and reference tooling for running CORTEX
 work as small Blocks. A Block has its own entrypoint, tests, and public
 contract. The CORTEX Kernel remains the authority for leases, replay,
